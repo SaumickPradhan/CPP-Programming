@@ -1,0 +1,471 @@
+#include <iostream>
+
+#include <string>
+
+#include "ItemToPurchase.h"
+
+using namespace std;
+
+
+
+ItemToPurchase::ItemToPurchase()
+
+{
+
+    itemName = "none";
+
+    itemPrice = 0;
+
+    itemQuantity = 0;
+    
+    itemDescription="none";
+
+}
+
+ItemToPurchase::ItemToPurchase(string a, string b, int c, int d)
+{
+	itemName=a;
+	itemDescription=b;
+	itemPrice=c;
+	itemQuantity=d;
+
+}
+
+void ItemToPurchase::SetDescription(string x)
+{
+	itemDescription=x;
+}
+	
+string ItemToPurchase::GetDescription()
+{
+	return itemDescription;	
+}
+
+void ItemToPurchase::PrintItemCost()
+{
+	string aa=ItemToPurchase::GetName();
+	int bb=ItemToPurchase::GetQuantity();
+	int cc=ItemToPurchase::GetPrice();
+	int dd=bb*cc;
+	cout<<aa<<" "<<bb<<" @ $"<<cc<<" = $"<<dd<<endl;
+}
+
+
+void ItemToPurchase::PrintItemDescription()
+{
+	string aa=ItemToPurchase::GetName();
+	string bb=ItemToPurchase::GetDescription();
+	cout<<aa<<": "<<bb<<endl;
+}
+
+
+void ItemToPurchase::SetName(string name)
+
+{
+
+    itemName = name;
+
+}
+
+//Implementation of SetPrice function
+
+void ItemToPurchase::SetPrice(int itemPrice)
+
+{
+
+    this->itemPrice = itemPrice;
+
+}
+
+//Implementation of SetQuantity function
+
+void ItemToPurchase::SetQuantity(int itemQuantity)
+
+{
+
+    this->itemQuantity = itemQuantity;
+
+}
+
+//Implementation of GetName function
+
+string ItemToPurchase::GetName()
+
+{
+
+    return itemName;
+
+}
+
+//Implementation of GetPrice function
+
+int ItemToPurchase::GetPrice()
+
+{
+
+    return itemPrice;
+
+}
+
+//Implementation of GetQuantity function
+
+int ItemToPurchase::GetQuantity()
+
+{
+
+    return itemQuantity;
+
+}
+
+
+
+
+#pragma once
+
+#ifndef ITEMTOPURCHASE_H_INCLUDED
+
+#define ITEMTOPURCHASE_H_INCLUDED
+
+#include<string>
+
+#include <iostream>
+
+using namespace std;
+
+class ItemToPurchase
+
+{
+
+public:
+
+   
+    ItemToPurchase();
+    ItemToPurchase(string a, string b, int c, int d);
+
+    
+    void SetDescription(string s);
+	
+	string GetDescription();
+
+    void PrintItemCost();
+    
+    void PrintItemDescription();
+    
+	void SetName(string ItemName);
+
+   
+    void SetPrice(int itemPrice);
+
+   
+    void SetQuantity(int itemQuantity);
+
+    string GetName();
+
+    int GetPrice();
+
+
+    int GetQuantity();
+
+private:
+	
+	string itemDescription;
+ 
+    string itemName;
+
+    int itemPrice;
+
+    int itemQuantity;
+
+};
+
+#endif
+
+
+
+#include<iostream>
+
+#include<string>
+
+#include "ItemToPurchase.h"
+# include "ShoppingCart.h"
+
+using namespace std;
+void PrintMenu(ShoppingCart a)
+{
+string c;
+while(1)
+{
+
+cout<<"MENU"<<endl;
+cout<<"a - Add item to cart"<<endl;
+cout<<"d - Remove item from cart"<<endl;
+cout<<"c - Change item quantity"<<endl;
+cout<<"i - Output items' descriptions"<<endl;
+cout<<"o - Output shopping cart"<<endl;
+cout<<"q - Quit"<<endl<<endl;
+cout<<"Choose an option:"<<endl;
+cin>>c;
+if(c=="q")
+{
+	break;
+}
+else if(c=="a")
+{
+	string w,b;
+	int c,d;
+cout<<"ADD ITEM TO CART"<<endl;
+cout<<"Enter the item name:"<<endl;
+getline(cin,w);
+cout<<"Enter the item description:"<<endl;
+getline(cin,b);
+cout<<"Enter the item price:"<<endl;
+cin>>c;
+cout<<"Enter the item quantity"<<endl;
+cin>>d;
+
+ItemToPurchase x(w,b,c,d);
+a.AddItem(x);
+
+}
+else if(c=="d")
+{
+	string s;
+	cout<<"REMOVE ITEM FROM CART"<<endl;
+	cout<<"Enter name of item to remove:"<<endl;
+	getline(cin,s);
+	a.RemoveItem(s);
+}
+else if(c=="c")
+{
+string x;
+int y;
+cout<<"CHANGE ITEM QUANTITY"<<endl;
+cout<<"Enter the item name:"<<endl;
+getline(cin,x);
+
+cout<<"Enter the new quantity:"<<endl;
+cin>>y;
+ItemToPurchase q(x,"none",0,y);
+a.ModifyItem(q);
+	
+}
+else if(c=="i")
+{
+	cout<<"OUTPUT ITEMS' DESCRIPTIONS"<<endl;
+	a.PrintDescriptions();
+	
+}
+else if(c=="o")
+{
+	cout<<"OUTPUT SHOPPING CART"<<endl;
+	a.PrintTotal();
+
+}
+else
+{
+	continue;
+}
+
+
+}
+
+int main()
+
+{
+	string cn,td;
+	
+	cout<<"Enter customer's name:"<<endl;
+	getline(cin,cn);
+	cout<<"Enter today's date:"<<endl;
+	getline(cin,td);
+	ShoppingCart a(cn,td);
+	cout<<"Customer name: "<<a.GetCustomerName()<<endl;
+	cout<<"Today's date: "<<a.GetDate()<<endl;
+	
+	PrintMenu(a);
+
+    
+
+    
+    return 0;
+
+}
+
+
+
+
+
+
+#ifndef SHOPPINGCART_HPP
+
+#define SHOPPINGCART_HPP
+
+#include<string>
+
+#include <iostream>
+#include "ItemToPurchase.h"
+
+using namespace std;
+
+class ShoppingCart
+{
+	public:
+		ShoppingCart();
+		ShoppingCart(string a, string b);
+		
+		string GetCustomerName();
+        string GetDate();
+        void AddItem(ItemToPurchase x);
+        void RemoveItem(string a);
+        void ModifyItem(ItemToPurchase y);
+        int GetNumItemsInCart();
+        int GetCostOfCart();
+        void PrintTotal();
+        void PrintDescriptions();
+		
+		
+	private:
+	string customerName;
+    string currentDate;
+    vector < ItemToPurchase > cartItems;
+};
+#endif
+
+
+
+
+
+#include <iostream>
+
+#include <string>
+
+#include "ShoppingCart.h"
+
+using namespace std;
+
+ShoppingCart::ShoppingCart()
+{
+	customerName= "none";
+    currentDate="January 1, 2016";
+}
+
+ShoppingCart::ShoppingCart(string a, string b)
+{
+	customerName= a;
+    currentDate=b;
+}
+
+string ShoppingCart::GetCustomerName()
+{
+	return customerName;
+}
+
+string ShoppingCart::GetDate()
+{
+	return currentDate;
+}
+
+void ShoppingCart::AddItem(ItemToPurchase x)
+{
+	cartItems.push_back(x);
+}
+
+void ShoppingCart::RemoveItem(string a)
+{
+	int k=0;
+	for (size_t i=0;i<cartItems.size();i++)
+	{
+		if(cartItems.at(i).GetName()==a)
+		{
+			cartItems.erase(i);
+			k++;
+		}
+		
+	}
+	if (k==0)
+	{
+		cout<<"Item not found in cart. Nothing removed."<<endl;
+	}
+}
+
+void ShoppingCart::ModifyItem(ItemToPurchase y)
+{
+	int k=0;
+	string jj=y.GetName();
+	for (size_t i=0;i<cartItems.size();i++)
+	{
+		if(cartItems.at(i).GetName()==jj)
+		{
+			
+			
+			if (y.GetDescription()!="none")
+			{
+				cartItems.at(i).SetDescription(y.GetDescription());
+				
+			
+			}
+			if(y.GetPrice()!=0)
+			{
+				cartItems.at(i).SetPrice(y.GetPrice());
+			}
+			
+			if(y.GetQuantity()!=0)
+			{
+				cartItems.at(i).SetQuantity(y.GetQuantity());
+			}
+			
+			k++;
+		}
+		
+	}
+	if (k==0)
+	{
+		cout<<"Item not found in cart. Nothing modified."<<endl;
+	}
+}
+
+
+int ShoppingCart::GetNumItemsInCart()
+{
+	int t=0;
+	for (size_t i=0;i<cartItems.size();i++)
+	{
+		t=t+cartItems.at(i).GetQuantity();
+	}
+	return t;
+}
+
+int ShoppingCart::GetCostOfCart()
+{
+	int t=0;
+	for (size_t i=0;i<cartItems.size();i++)
+	{
+		t=t+((cartItems.at(i).GetPrice())*(cartItems.at(i).GetQuantity()));
+	}
+	return t;
+}
+
+void ShoppingCart::PrintTotal()
+{
+	cout<<customerName<<"'s Shopping Cart - "<<currentDate<<endl;
+cout<<"Number of Items: "<<GetNumItemsInCart()<<endl<<endl;
+
+for (size_t i=0;i<cartItems.size();i++)
+	{
+		cartItems.at(i).PrintItemCost();
+		
+	}
+	cout<<endl<<"Total: $"<<GetCostOfCart()<<endl;
+}
+
+void ShoppingCart::PrintDescriptions()
+{
+	cout<<customerName<<"'s Shopping Cart - "<<currentDate<<endl<<endl;
+	cout<<"Item Descriptions"<<end;
+	for (size_t i=0;i<cartItems.size();i++)
+	{
+		cartItems.at(i).PrintItemDescription();
+	}
+		
+	
+}
